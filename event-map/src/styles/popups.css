@@ -1,0 +1,55 @@
+/* Увеличим шрифт и сделаем фон */
+.leaflet-popup-content-wrapper {
+    background: #f0f8ff; /* светло-голубой */
+    color: #333;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 14px;
+    padding: 12px 16px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+}
+
+/* Добавим плавное появление */
+.leaflet-popup {
+    opacity: 0.95;
+    transition: opacity 0.3s ease;
+}
+
+/* Изменим цвет хвостика */
+.leaflet-popup-tip {
+    background: #f0f8ff;
+    filter: drop-shadow(0 1px 1px rgba(0,0,0,0.1));
+}
+
+/* Стили для input и textarea внутри popup */
+.leaflet-popup-content input[type="text"],
+.leaflet-popup-content textarea,
+.leaflet-popup-content input[type="datetime-local"],
+.leaflet-popup-content button {
+    width: 100%;
+    margin-bottom: 8px;
+    padding: 6px 8px;
+    font-size: 14px;
+    border: 1px solid #aaa;
+    border-radius: 5px;
+    box-sizing: border-box;
+    outline: none;
+}
+
+.leaflet-popup-content button {
+    background-color: #3388ff;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.2s ease;
+}
+
+.leaflet-popup-content button:disabled {
+    background-color: #a0bff9;
+    cursor: not-allowed;
+}
+
+.leaflet-popup-content button:hover:not(:disabled) {
+    background-color: #2874d8;
+}
