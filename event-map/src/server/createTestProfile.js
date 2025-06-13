@@ -1,14 +1,14 @@
 const { db } = require("./firebase_server");
 
 async function createTestProfile() {
-  const uid = "test_user_2";
+  const uid = "test_user_1";
 
   try {
     await db.collection("profiles").doc(uid).set({
       first_name: "Тест",
-      last_name: "Пользователь",
+      last_name: "Пользователь1",
       age: 25,
-      interest: "тестирование",
+      interest: "тестирование1",
       created_at: new Date(),
     });
     console.log("Тестовый профиль создан");

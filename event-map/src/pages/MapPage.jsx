@@ -1,7 +1,8 @@
 import Map from "../components/Map.jsx";
+import Navigation from "../components/Navigation.jsx";
 import { useEffect, useState } from "react";
 import { collection, getDocs, addDoc } from "firebase/firestore";
-import { db } from "../api/firebase";
+import { db } from "../сlient/firebase";
 import "../styles/MapPage.css"
 
 const MapPage = () => {
@@ -82,6 +83,7 @@ const MapPage = () => {
 
     return (
         <div style={{ position: "relative", height: "100vh" }}>
+            <Navigation />
             {geoError && <div style={{ color: "red", padding: 10, textAlign: "center" }}>{geoError}</div>}
             <Map
                 events={events}
