@@ -8,16 +8,16 @@ app.use(express.json());
 
 // 📥 POST /register — регистрация пользователя
 app.post("/register", async (req, res) => {
-  const { first_name, last_name, username, password, age, interest } = req.body;
+  const { first_name, last_name, email, password, age, interest } = req.body;
 
-  if (!first_name || !last_name || !username || !password || !age || !interest) {
+  if (!first_name || !last_name || !email || !password || !age || !interest) {
     return res.status(400).json({ message: "Заполните все поля." });
   }
 
   try {
     // 🔐 Создание пользователя в Firebase Auth
     const userRecord = await auth.createUser({
-      email: username,
+      email,
       password,
     });
 
