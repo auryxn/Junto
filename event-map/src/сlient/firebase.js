@@ -2,7 +2,6 @@ import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 
-// Вставь сюда конфиг из Firebase
 const firebaseConfig = {
   apiKey: "AIzaSyBmUjdKJuyfvl89mD7ERiMl-3AB1vURk1A",
   authDomain: "junto-42e0b.firebaseapp.com",
@@ -12,9 +11,7 @@ const firebaseConfig = {
   appId: "1:651577715608:web:c82af70767af6f878659ed"
 };
 
-// Инициализация Firebase
 const app = initializeApp(firebaseConfig);
 
-// Экспорт сервисов для использования в других файлах
 export const auth = getAuth(app);
 export const db = getFirestore(app);
