@@ -1,33 +1,19 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Login from "./pages/Login.jsx";
-import Register from "./pages/Register.jsx";
-import Profile from "./pages/Profile.jsx";
-import MapPage from "./pages/MapPage.jsx";
-import ProtectedRoute from "./components/ProtectedRoute.jsx";
+// src/App.jsx
+import React from "react";
+import { Routes, Route } from "react-router-dom";
+import MapPage from "./pages/MapPage";
+import Profile from "./pages/Profile"
+import AuthPage from "./pages/AuthPage";
 
-const App = () => (
-    <Router>
-      <Routes>
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route 
-          path="/" 
-          element={
-            <ProtectedRoute>
-              <MapPage />
-            </ProtectedRoute>
-          } 
-        />
-        <Route 
-          path="/profile" 
-          element={
-            <ProtectedRoute>
-              <Profile />
-            </ProtectedRoute>
-          } 
-        />
-      </Routes>
-    </Router>
-);
+const App = () => {
+    return (
+        <Routes>
+            <Route path="/" element={<AuthPage />} />
+            <Route path="/map" element={<MapPage />} />
+            <Route path="/profile" element={<Profile />} />
+        </Routes>
+    );
+};
+//fefee
 
 export default App;
