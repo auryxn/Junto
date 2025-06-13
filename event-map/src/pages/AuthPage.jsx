@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
 import { collection, getDocs, query, where, doc, setDoc } from "firebase/firestore";
-import { auth, db } from "../сlient/firebase";  // <-- исправлено client
+import { auth, db } from "../client/firebase";  // <-- исправлено client
 import { useNavigate } from "react-router-dom";
 import "../styles/AuthPage.css";
 

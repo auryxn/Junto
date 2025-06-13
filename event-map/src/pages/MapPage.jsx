@@ -1,9 +1,8 @@
 import Map from "../components/Map.jsx";
-import Navigation from "../components/Navigation.jsx";
 import { useEffect, useState } from "react";
 import { collection, getDocs, addDoc } from "firebase/firestore";
-import { db } from "../сlient/firebase";
-import "../styles/MapPage.css"
+import { db } from "../client/firebase";
+import "../styles/MapPage.css";
 
 const MapPage = () => {
     const [events, setEvents] = useState([]);
@@ -53,10 +52,9 @@ const MapPage = () => {
             position: latlng,
             title: "",
             description: "",
-            time: formatDateTimeLocal(new Date()), // <-- ставим текущую дату-время
+            time: formatDateTimeLocal(new Date()),
         });
     };
-
 
     const updateNewMarker = (updatedMarker) => {
         setNewMarker(updatedMarker);
@@ -71,6 +69,7 @@ const MapPage = () => {
                 location: markerData.position,
             });
             setNewMarker(null);
+
             const snapshot = await getDocs(collection(db, "events"));
             const eventsData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
             setEvents(eventsData);
@@ -83,7 +82,6 @@ const MapPage = () => {
 
     return (
         <div style={{ position: "relative", height: "100vh" }}>
-            <Navigation />
             {geoError && <div style={{ color: "red", padding: 10, textAlign: "center" }}>{geoError}</div>}
             <Map
                 events={events}
@@ -109,5 +107,4 @@ const MapPage = () => {
     );
 };
 
-//fefee
 export default MapPage;
