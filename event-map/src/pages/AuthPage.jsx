@@ -87,7 +87,7 @@ const AuthPage = () => {
             setError("Ошибка регистрации: " + err.message);
         }
     };
-//fefe
+//fefee
     return (
         <div className="auth-wrapper">
             <div className="auth-card">
