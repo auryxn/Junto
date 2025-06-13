@@ -5,7 +5,7 @@ async function createTestLocation() {
 
   try {
     await db.collection("locations").doc(locationId).set({
-      name: "Центральная площадь",
+      name: "Цеfsafнтральная площадь",
       information: "Место встречи и проведения мероприятий",
       coordinates: {
         lat: 53.9006,
