@@ -1,17 +1,7 @@
 import { useState, useEffect } from "react";
-import {
-    createUserWithEmailAndPassword,
-    signInWithEmailAndPassword,
-} from "firebase/auth";
-import {
-    collection,
-    getDocs,
-    query,
-    where,
-    doc,
-    setDoc,
-} from "firebase/firestore";
-import { auth, db } from "../api/firebase";
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
+import { collection, getDocs, query, where, doc, setDoc } from "firebase/firestore";
+import { auth, db } from "../сlient/firebase";  // <-- исправлено client
 import { useNavigate } from "react-router-dom";
 import "../styles/AuthPage.css";
 
@@ -27,14 +17,12 @@ const AuthPage = () => {
 
     const navigate = useNavigate();
 
-    // Валидация формы — обновляем formValid
     useEffect(() => {
         if (tab === "login") {
             setFormValid(email.trim() !== "" && password.trim() !== "");
         } else {
             const namesValid = firstName.trim() !== "" && lastName.trim() !== "";
-            const passwordsValid =
-                password.length >= 6 && password === confirmPassword;
+            const passwordsValid = password.length >= 6 && password === confirmPassword;
             const emailValid = /\S+@\S+\.\S+/.test(email);
             setFormValid(namesValid && passwordsValid && emailValid);
         }
@@ -74,7 +62,9 @@ const AuthPage = () => {
             return;
         }
         try {
+            // создаем пользователя
             const userCred = await createUserWithEmailAndPassword(auth, email, password);
+            // создаем профиль пользователя в Firestore
             await setDoc(doc(db, "users", userCred.user.uid), {
                 firstName,
                 lastName,
@@ -87,7 +77,7 @@ const AuthPage = () => {
             setError("Ошибка регистрации: " + err.message);
         }
     };
-//fefee
+
     return (
         <div className="auth-wrapper">
             <div className="auth-card">

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { getCurrentUser, getUserData } from "../сlient/firebase";
 import Navigation from "../components/Navigation";
-import "./Profile.css";
+import "../styles/Profile.css";
 
 const Profile = () => {
     const [userData, setUserData] = useState(null);
