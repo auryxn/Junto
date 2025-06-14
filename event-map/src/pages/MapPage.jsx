@@ -1,14 +1,20 @@
 import Map from "../components/Map.jsx";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { collection, getDocs, addDoc } from "firebase/firestore";
 import { db } from "../client/firebase";
 import "../styles/MapPage.css";
+import { useNavigate } from "react-router-dom";
 
 const MapPage = () => {
+    const navigate = useNavigate();
+
     const [events, setEvents] = useState([]);
     const [newMarker, setNewMarker] = useState(null);
     const [userPosition, setUserPosition] = useState(null);
     const [geoError, setGeoError] = useState(null);
+
+    const [menuOpen, setMenuOpen] = useState(false);
+    const menuRef = useRef(null);
 
     useEffect(() => {
         const fetchEvents = async () => {
@@ -36,6 +42,29 @@ const MapPage = () => {
             setUserPosition([55.75, 37.61]);
         }
     }, []);
+
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (menuRef.current && !menuRef.current.contains(event.target)) {
+                setMenuOpen(false);
+            }
+        };
+        if (menuOpen) {
+            document.addEventListener("mousedown", handleClickOutside);
+        } else {
+            document.removeEventListener("mousedown", handleClickOutside);
+        }
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, [menuOpen]);
+
+    const toggleMenu = () => setMenuOpen(prev => !prev);
+
+    const navigateTo = (path) => {
+        navigate(path);
+        setMenuOpen(false);
+    };
 
     const formatDateTimeLocal = (date) => {
         const pad = (num) => (num < 10 ? '0' + num : num);
@@ -81,8 +110,7 @@ const MapPage = () => {
     if (!userPosition) return <div>Определяем ваше местоположение...</div>;
 
     return (
-        <div style={{ position: "relative", height: "100vh" }}>
-            {geoError && <div style={{ color: "red", padding: 10, textAlign: "center" }}>{geoError}</div>}
+        <div className="map-container" style={{ position: "relative", height: "100vh" }}>
             <Map
                 events={events}
                 userPosition={userPosition}
@@ -96,7 +124,7 @@ const MapPage = () => {
                     touchZoom: true,
                     doubleClickZoom: true,
                     keyboard: true,
-                    zoomControl: true,
+                    zoomControl: false,
                     minZoom: 5,
                     maxZoom: 18,
                 }}

@@ -1,11 +1,10 @@
-import { useState, useEffect } from "react";
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
-import { collection, getDocs, query, where, doc, setDoc } from "firebase/firestore";
-import { auth, db } from "../client/firebase";  // <-- исправлено client
+import React, { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/AuthPage.css";
+import { AuthContext } from "../context/AuthContext";  // импортируй контекст
 
 const AuthPage = () => {
+    const { login } = useContext(AuthContext);  // достань login из контекста
     const [tab, setTab] = useState("login");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -19,7 +18,7 @@ const AuthPage = () => {
 
     useEffect(() => {
         if (tab === "login") {
-            setFormValid(email.trim() !== "" && password.trim() !== "");
+            setFormValid(email.trim() === "test@example.com" && password.trim() === "123456");
         } else {
             const namesValid = firstName.trim() !== "" && lastName.trim() !== "";
             const passwordsValid = password.length >= 6 && password === confirmPassword;
@@ -27,6 +26,7 @@ const AuthPage = () => {
             setFormValid(namesValid && passwordsValid && emailValid);
         }
     }, [tab, email, password, confirmPassword, firstName, lastName]);
+
 
     const resetForm = () => {
         setEmail("");
@@ -37,20 +37,15 @@ const AuthPage = () => {
         setError("");
     };
 
+
     const handleLogin = async (e) => {
         e.preventDefault();
         setError("");
-        try {
-            const q = query(collection(db, "users"), where("email", "==", email));
-            const snapshot = await getDocs(q);
-            if (snapshot.empty) {
-                setError("Такого аккаунта не существует.");
-                return;
-            }
-            await signInWithEmailAndPassword(auth, email, password);
-            navigate("/map");
-        } catch (err) {
-            setError("Ошибка входа: " + err.message);
+        if (email === "test@example.com" && password === "123456") {
+            login();           // вызываем login из контекста
+            navigate("/profile");
+        } else {
+            setError("Неверный email или пароль");
         }
     };
 
@@ -61,21 +56,8 @@ const AuthPage = () => {
             setError("Пароли не совпадают");
             return;
         }
-        try {
-            // создаем пользователя
-            const userCred = await createUserWithEmailAndPassword(auth, email, password);
-            // создаем профиль пользователя в Firestore
-            await setDoc(doc(db, "users", userCred.user.uid), {
-                firstName,
-                lastName,
-                email,
-                uid: userCred.user.uid,
-                eventsJoined: [],
-            });
-            navigate("/map");
-        } catch (err) {
-            setError("Ошибка регистрации: " + err.message);
-        }
+        login();  // тоже вызов login из контекста
+        navigate("/profile");
     };
 
     return (

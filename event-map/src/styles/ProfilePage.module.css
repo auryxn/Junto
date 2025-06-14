@@ -1,0 +1,156 @@
+.container {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, #74ebd5 0%, #acb6e5 100%);
+    padding: 20px;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.card {
+    display: flex;
+    max-width: 900px;
+    width: 100%;
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    overflow: hidden;
+    animation: fadeInUp 0.7s ease forwards;
+}
+
+.photoWrapper {
+    flex: 1 1 300px;
+    background: #4a90e2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 30px;
+}
+
+.photo {
+    width: 250px;
+    height: 250px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 5px solid white;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.25);
+}
+
+.info {
+    flex: 2 1 600px;
+    padding: 40px 60px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.name {
+    margin: 0 0 15px 0;
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #333;
+}
+
+.age {
+    font-weight: 400;
+    font-size: 1.6rem;
+    color: #777;
+}
+
+.description {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: #555;
+    margin-bottom: 40px;
+    white-space: pre-line;
+}
+
+.buttons {
+    display: flex;
+    gap: 15px;
+}
+
+.editBtn,
+.logoutBtn {
+    padding: 12px 30px;
+    font-weight: 600;
+    font-size: 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    border: none;
+    transition: background-color 0.3s ease;
+    flex: 1;
+    user-select: none;
+}
+
+.editBtn {
+    background-color: #4a90e2;
+    color: white;
+}
+
+.editBtn:hover {
+    background-color: #357abd;
+}
+
+.logoutBtn {
+    background-color: #e74c3c;
+    color: white;
+}
+
+.logoutBtn:hover {
+    background-color: #c0392b;
+}
+
+.loading {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.4rem;
+    color: white;
+    font-weight: 600;
+    font-family: Arial, sans-serif;
+}
+
+/* Анимация появления */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Адаптив */
+@media (max-width: 768px) {
+    .card {
+        flex-direction: column;
+        max-width: 100%;
+    }
+
+    .photoWrapper {
+        padding: 20px;
+    }
+
+    .photo {
+        width: 180px;
+        height: 180px;
+    }
+
+    .info {
+        padding: 30px 20px;
+    }
+
+    .name {
+        font-size: 2rem;
+    }
+
+    .description {
+        font-size: 1rem;
+        margin-bottom: 25px;
+    }
+}

@@ -1,3 +1,9 @@
 body{
     margin: 0 0;
 }
+
+/* В MapPage.css или отдельном css */
+.map-container {
+    height: 100%;
+    width: 100%;
+}
