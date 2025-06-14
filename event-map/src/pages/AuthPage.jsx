@@ -2,6 +2,8 @@ import React, { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/AuthPage.css";
 import { AuthContext } from "../context/AuthContext";  // импортируй контекст
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../client/firebase"; // импорт из твоего Firebase файла
 
 const AuthPage = () => {
     const { login } = useContext(AuthContext);  // достань login из контекста
@@ -18,7 +20,9 @@ const AuthPage = () => {
 
     useEffect(() => {
         if (tab === "login") {
-            setFormValid(email.trim() === "test@example.com" && password.trim() === "123456");
+            const emailValid = /\S+@\S+\.\S+/.test(email);
+            const passwordValid = password.length >= 6;
+            setFormValid(emailValid && passwordValid);
         } else {
             const namesValid = firstName.trim() !== "" && lastName.trim() !== "";
             const passwordsValid = password.length >= 6 && password === confirmPassword;
@@ -26,6 +30,7 @@ const AuthPage = () => {
             setFormValid(namesValid && passwordsValid && emailValid);
         }
     }, [tab, email, password, confirmPassword, firstName, lastName]);
+
 
 
     const resetForm = () => {
@@ -41,13 +46,16 @@ const AuthPage = () => {
     const handleLogin = async (e) => {
         e.preventDefault();
         setError("");
-        if (email === "test@example.com" && password === "123456") {
-            login();           // вызываем login из контекста
+        try {
+            await signInWithEmailAndPassword(auth, email, password);
+            login(); // установит isAuth в true
             navigate("/profile");
-        } else {
+        } catch (err) {
             setError("Неверный email или пароль");
         }
     };
+
+
 
     const handleRegister = async (e) => {
         e.preventDefault();
@@ -56,9 +64,15 @@ const AuthPage = () => {
             setError("Пароли не совпадают");
             return;
         }
-        login();  // тоже вызов login из контекста
-        navigate("/profile");
+        try {
+            await createUserWithEmailAndPassword(auth, email, password);
+            login();
+            navigate("/profile");
+        } catch (err) {
+            setError("Ошибка при регистрации: " + err.message);
+        }
     };
+
 
     return (
         <div className="auth-wrapper">

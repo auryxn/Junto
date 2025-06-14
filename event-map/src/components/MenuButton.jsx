@@ -6,6 +6,9 @@ const MenuButton = () => {
     const menuRef = useRef(null);
     const navigate = useNavigate();
 
+
+
+
     useEffect(() => {
         const handleClickOutside = (event) => {
             if (menuRef.current && !menuRef.current.contains(event.target)) {
@@ -61,6 +64,7 @@ const MenuButton = () => {
                         boxShadow: "0 2px 8px rgba(0,0,0,0.15)",
                         minWidth: 150,
                         textAlign: "left",
+                        color: "black",
                     }}
                 >
                     <div
