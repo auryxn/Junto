@@ -1,111 +1,68 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { auth, db } from "../client/firebase";
-import { doc, getDoc } from "firebase/firestore";
-import "../styles/ProfilePage.css";
+import React from "react";
+import "../styles/ProfilePage.css"
 
 const ProfilePage = () => {
-    const navigate = useNavigate();
-    const [userData, setUserData] = useState(null);
-    const [loading, setLoading] = useState(true);
 
-    const handleLogout = async () => {
-        localStorage.removeItem("isAuth");
-        navigate("/");
+    const user = {
+        photo: "https://i.pravatar.cc/250?img=12",
+        firstName: "Марина",
+        lastName: "Смирнова",
+        age: 27,
+        email: "marina.smirnova@example.com",
+        city: "Москва",
+        hobbies: ["Путешествия", "Фотография", "Йога", "Кулинария"],
+        description:
+            "Люблю открывать новые места и заниматься творчеством. Всегда стремлюсь к развитию и новым впечатлениям.",
+        socials: {
+            instagram: "#",
+            twitter: "#",
+            linkedin: "#",
+        },
     };
 
-    useEffect(() => {
-        const fetchUserData = async () => {
-            const user = auth.currentUser;
-            if (!user) {
-                navigate("/");
-                return;
-            }
-
-            try {
-                const userRef = doc(db, "users", user.uid);
-                const userSnap = await getDoc(userRef);
-
-                if (userSnap.exists()) {
-                    setUserData(userSnap.data());
-                } else {
-                    console.warn("Пользователь не найден в Firestore");
-                }
-            } catch (error) {
-                console.error("Ошибка загрузки данных пользователя:", error);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchUserData();
-    }, [navigate]);
-
-    if (loading)
-        return <div style={{ color: "white", textAlign: "center", marginTop: "50px" }}>Загрузка...</div>;
-
-    if (!userData)
-        return <div style={{ color: "white", textAlign: "center", marginTop: "50px" }}>Нет данных</div>;
-
-    const {
-        photo,
-        firstName,
-        lastName,
-        age,
-        email,
-        city,
-        hobbies,
-        description,
-        socials,
-    } = userData;
-
     return (
-        <div className="profile-container" role="main" aria-label="Профиль пользователя">
-            <div className="header">
-                <img
-                    src={photo}
-                    alt={`Фото профиля пользователя ${firstName} ${lastName}`}
-                    className="photo"
-                    loading="lazy"
-                />
-                <div className="main-info">
-                    <h1 className="name-age">
-                        {firstName} {lastName}, {age}
-                    </h1>
-                    <div className="location-email">
-                        {city} • <a href={`mailto:${email}`} style={{ color: "#f0c987", textDecoration: "underline" }}>{email}</a>
+        <>
+            <div className="profile-container" role="main" aria-label="Профиль пользователя">
+                <div className="header">
+                    <img
+                        src={user.photo}
+                        alt={`Фото профиля пользователя ${user.firstName} ${user.lastName}`}
+                        className="photo"
+                        loading="lazy"
+                    />
+                    <div className="main-info">
+                        <h1 className="name-age">
+                            {user.firstName} {user.lastName}, {user.age}
+                        </h1>
+                        <div className="location-email">
+                            {user.city} • <a href={`mailto:${user.email}`} style={{color: "#f0c987", textDecoration: "underline"}}>{user.email}</a>
+                        </div>
+                        <p className="description">{user.description}</p>
                     </div>
-                    <p className="description">{description}</p>
                 </div>
-            </div>
 
-            {hobbies?.length > 0 && (
                 <section className="hobbies-section" aria-label="Хобби пользователя">
                     <div className="hobbies-title">Хобби</div>
                     <div className="hobbies-list">
-                        {hobbies.map((hobby, i) => (
+                        {user.hobbies.map((hobby, i) => (
                             <div className="hobby" key={i}>{hobby}</div>
                         ))}
                     </div>
                 </section>
-            )}
 
-            <section className="socials" aria-label="Социальные сети пользователя">
-                {socials?.instagram && (
-                    <a href={socials.instagram} className="social-link" aria-label="Instagram" target="_blank" rel="noreferrer">📸</a>
-                )}
-                {socials?.twitter && (
-                    <a href={socials.twitter} className="social-link" aria-label="Twitter" target="_blank" rel="noreferrer">🐦</a>
-                )}
-                {socials?.linkedin && (
-                    <a href={socials.linkedin} className="social-link" aria-label="LinkedIn" target="_blank" rel="noreferrer">💼</a>
-                )}
-            </section>
-
-            <button className="logout-button" onClick={handleLogout} aria-label="Выйти из профиля">
-                Выйти
-            </button>
-        </div>
+                <section className="socials" aria-label="Социальные сети пользователя">
+                    <a href={user.socials.instagram} className="social-link" aria-label="Instagram" target="_blank" rel="noreferrer">
+                        📸
+                    </a>
+                    <a href={user.socials.twitter} className="social-link" aria-label="Twitter" target="_blank" rel="noreferrer">
+                        🐦
+                    </a>
+                    <a href={user.socials.linkedin} className="social-link" aria-label="LinkedIn" target="_blank" rel="noreferrer">
+                        💼
+                    </a>
+                </section>
+            </div>
+        </>
     );
 };
 
